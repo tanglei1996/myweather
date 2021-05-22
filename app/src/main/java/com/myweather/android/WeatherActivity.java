@@ -50,7 +50,7 @@ public class WeatherActivity extends AppCompatActivity {
     private ImageView bingPicImg;
 
     public SwipeRefreshLayout swipeRefresh;
-    private String mWeatherId;
+
 
     public DrawerLayout drawerLayout;
     private Button navButton;
@@ -106,23 +106,24 @@ public class WeatherActivity extends AppCompatActivity {
         } else {
             loadBingPic();
         }
+        final String weatherId;
         if (weatherString != null) {
             // 有缓存时直接解析天气数据
             Weather weather = Utility.handleWeatherResponse(weatherString);
-            mWeatherId = weather.basic.weatherId;
+            weatherId = weather.basic.weatherId;
             showWeatherInfo(weather);
         } else {
             // 无缓存时去服务器查询天气
 //            String weatherId = getIntent().getStringExtra("weather_id");
-            mWeatherId = getIntent().getStringExtra("weather_id");
+            weatherId = getIntent().getStringExtra("weather_id");
             weatherLayout.setVisibility(View.INVISIBLE);
-            requestWeather(mWeatherId);
+            requestWeather(weatherId);
         }
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.
                 OnRefreshListener() {
             @Override
             public void onRefresh() {
-                requestWeather(mWeatherId);
+                requestWeather(weatherId);
             }
         });
     }
@@ -132,7 +133,7 @@ public class WeatherActivity extends AppCompatActivity {
      */
     public void requestWeather(final String weatherId) {
         String weatherUrl = "http://guolin.tech/api/weather?cityid=" +
-                weatherId + "&key=bc0418b57b2d4918819d3974ac1285d9";
+                weatherId + "&key=c9bb7b19d0064f6686fc5105f244d2c1";
 //        c9bb7b19d0064f6686fc5105f244d2c1
         HttpUtil.sendOkHttpRequest(weatherUrl, new Callback() {
             @Override
